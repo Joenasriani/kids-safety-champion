@@ -30,25 +30,26 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
             border-radius: 4vmin;
-            border: 1vmin solid rgba(255, 255, 255, 0.2);
+            border: 0.8vmin solid rgba(255, 255, 255, 0.2);
             display: flex;
             flex-direction: column;
-            padding: 3vmin;
+            padding: 2vmin;
             box-sizing: border-box;
             position: relative;
         }
 
         .champion-title {
-            font-size: 14vmin;
+            font-size: 13vmin;
             color: rgb(253, 224, 71);
             text-shadow: 0 1vmin 0 rgb(161, 98, 7);
-            margin-bottom: 3vmin;
+            margin-bottom: 2vmin;
+            line-height: 1;
         }
 
         .champion-title-small {
-            font-size: 6.5vmin;
+            font-size: 5vmin;
             color: rgb(253, 224, 71);
-            text-shadow: 0 0.5vmin 0 rgb(161, 98, 7);
+            text-shadow: 0 0.4vmin 0 rgb(161, 98, 7);
         }
 
         .btn-primary {
@@ -64,8 +65,8 @@
         }
 
         .nav-icon {
-            width: 8vmin;
-            height: 8vmin;
+            width: 7vmin;
+            height: 7vmin;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 2vmin;
             display: flex;
@@ -78,13 +79,13 @@
         .slot {
             background: rgba(0, 0, 0, 0.3);
             border: 0.4vmin dashed rgba(255, 255, 255, 0.3);
-            width: 7.5vmin;
-            height: 10vmin;
+            width: 6.5vmin;
+            height: 9vmin;
             border-radius: 1.5vmin;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5.5vmin;
+            font-size: 5vmin;
             font-weight: 700;
             cursor: default;
         }
@@ -96,20 +97,20 @@
         .slot.active {
             border-color: rgb(45, 212, 191);
             background: rgba(45, 212, 191, 0.2);
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .slot-spacer {
-            width: 4.5vmin;
+            width: 3vmin;
         }
 
         .letter-btn {
             background: linear-gradient(to bottom, rgb(244, 114, 182), rgb(219, 39, 119));
-            box-shadow: 0 0.8vmin 0 rgb(157, 23, 77);
-            width: 9.5vmin;
-            height: 9.5vmin;
-            border-radius: 2.5vmin;
-            font-size: 5vmin;
+            box-shadow: 0 0.7vmin 0 rgb(157, 23, 77);
+            width: 8vmin;
+            height: 8vmin;
+            border-radius: 2vmin;
+            font-size: 4.5vmin;
             font-weight: 700;
             color: white;
             display: flex;
@@ -130,7 +131,7 @@
             justify-content: center;
             color: white;
             font-weight: 700;
-            box-shadow: 0 0 4vmin rgba(45, 212, 191, 0.6);
+            box-shadow: 0 0 3vmin rgba(45, 212, 191, 0.6);
         }
 
         .screen {
@@ -140,6 +141,7 @@
             justify-content: center;
             height: 100%;
             text-align: center;
+            overflow: hidden;
         }
 
         .screen.active {
@@ -148,17 +150,17 @@
 
         .instruction-card {
             background: rgba(0, 0, 0, 0.2);
-            padding: 4vmin;
+            padding: 3vmin;
             border-radius: 3vmin;
-            max-width: 85vmin;
-            margin-bottom: 5vmin;
+            max-width: 80vmin;
+            margin-bottom: 3vmin;
         }
     </style>
 </head>
 <body>
 
     <div class="game-canvas">
-        <div id="game-nav" class="hidden flex justify-between items-center w-full mb-2">
+        <div id="game-nav" class="hidden flex justify-between items-center w-full mb-1">
             <div class="nav-icon" onclick="exitToMenu()">
                 <svg viewBox="0 0 24 24" width="70%" height="70%" fill="none" stroke="currentColor" stroke-width="3">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -173,43 +175,46 @@
             </div>
         </div>
 
+        <!-- Intro Screen -->
         <div id="intro-screen" class="screen active">
             <h1 class="champion-title uppercase font-black">Safety Champion</h1>
             <div class="instruction-card">
-                <h3 class="text-[5vmin] font-bold text-yellow-300 mb-2 text-center">How to Play</h3>
-                <p class="text-[3vmin] leading-relaxed text-slate-200 text-center">
-                    Learn to protect your body! Read the safety question and find the answer. Click the letters in order to solve the puzzle. If you make a mistake, click the letter in the square to undo it!
+                <h3 class="text-[4.5vmin] font-bold text-yellow-300 mb-1">How to Play</h3>
+                <p class="text-[2.8vmin] leading-tight text-slate-200">
+                    Learn to keep your body safe! Read the question and find the answer. Click the letters in order. Mistake? Click the square to undo! Finish 5 levels to win.
                 </p>
             </div>
-            <button onclick="startGame()" class="btn-primary text-[6vmin] font-black py-[3vmin] px-[15vmin] text-white uppercase tracking-widest">
+            <button onclick="startGame()" class="btn-primary text-[5vmin] font-black py-[2.5vmin] px-[12vmin] text-white uppercase tracking-widest">
                 Start Mission
             </button>
         </div>
 
+        <!-- Game Screen -->
         <div id="game-screen" class="screen">
-            <div class="w-full mb-6">
-                <div class="w-full h-[3vmin] bg-black/40 rounded-full overflow-hidden">
+            <div class="w-full mb-2">
+                <div class="w-full h-[2vmin] bg-black/40 rounded-full overflow-hidden">
                     <div id="progress-bar" class="h-full bg-teal-400 w-0 transition-all duration-500"></div>
                 </div>
             </div>
-            <div class="flex-grow flex flex-col justify-around w-full">
-                <h2 id="question-text" class="text-[6vmin] font-bold px-4 leading-tight text-center"></h2>
-                <div id="slots-wrap" class="flex flex-wrap justify-center items-center gap-[1.5vmin]"></div>
-                <div id="letters-wrap" class="flex flex-wrap justify-center gap-[3vmin]"></div>
+            <div class="flex-grow flex flex-col justify-around w-full py-1">
+                <h2 id="question-text" class="text-[5.5vmin] font-bold px-4 leading-none mb-2"></h2>
+                <div id="slots-wrap" class="flex flex-wrap justify-center items-center gap-[1vmin]"></div>
+                <div id="letters-wrap" class="flex flex-wrap justify-center gap-[2vmin]"></div>
             </div>
         </div>
 
+        <!-- Congrats Screen -->
         <div id="congrats-screen" class="screen">
             <div class="relative">
-                <div class="text-[22vmin] animate-bounce">🏆</div>
-                <div class="absolute -top-[3vmin] -right-[3vmin] text-[12vmin]">✨</div>
+                <div class="text-[20vmin] animate-bounce">🏆</div>
+                <div class="absolute -top-[2vmin] -right-[2vmin] text-[10vmin]">✨</div>
             </div>
-            <h2 class="text-[11vmin] font-black text-white mb-2 leading-none text-center">YOU WIN!</h2>
-            <h3 class="text-[6vmin] text-yellow-300 font-bold mb-6 text-center">CERTIFIED SAFETY CHAMPION</h3>
-            <p class="text-[3.5vmin] text-slate-200 mb-10 max-w-[80vmin] text-center">
-                Mission accomplished! You know how to make healthy choices and stay away from dangerous things. Keep protecting your body!
+            <h2 class="text-[10vmin] font-black text-white mb-1 leading-none">YOU WIN!</h2>
+            <h3 class="text-[5.5vmin] text-yellow-300 font-bold mb-4">CERTIFIED SAFETY CHAMPION</h3>
+            <p class="text-[3vmin] text-slate-200 mb-6 max-w-[75vmin]">
+                You finished the mission! You know how to make healthy choices and stay away from dangerous things.
             </p>
-            <button onclick="exitToMenu()" class="btn-primary text-[5vmin] font-black py-[3vmin] px-[12vmin] text-white uppercase tracking-tighter">
+            <button onclick="exitToMenu()" class="btn-primary text-[4.5vmin] font-black py-[2vmin] px-[10vmin] text-white uppercase tracking-tighter">
                 Main Menu
             </button>
         </div>
@@ -217,28 +222,30 @@
 
     <script>
         const BANK = {
-            oneWord: [ 
-                { q: "What is the best choice when offered a strange pill?", a: "NO" },
-                { q: "Who should always check your vitamins before you take them?", a: "ADULT" },
+            oneWord: [ // Levels 1 & 2
+                { q: "If a stranger offers you a mystery pill, say?", a: "NO" },
+                { q: "Who should always check medicine for you?", a: "ADULT" },
                 { q: "Healthy kids keep their brain and body...", a: "CLEAN" },
                 { q: "Making safe choices makes you a Safety...", a: "CHAMPION" },
-                { q: "If you find something that looks like candy but is not?", a: "AWAY" },
-                { q: "To stay strong, your body needs to be kept...", a: "SAFE" }
+                { q: "If you find a pill that looks like candy?", a: "AWAY" },
+                { q: "What should you stay away from if you find it?", a: "DRUGS" },
+                { q: "To stay safe, keep your body and brain...", a: "STRONG" },
+                { q: "Who can help you at home stay safe?", a: "PARENTS" }
             ],
-            twoWord: [ 
-                { q: "If a stranger offers you a mystery treat, say?", a: "NO WAY" },
-                { q: "If you find a needle or sharp object in the park?", a: "WALK AWAY" },
-                { q: "If a friend asks you to try something scary, you should?", a: "SAY NO" },
-                { q: "Who should you tell if you find strange pills on the floor?", a: "TELL ADULT" },
-                { q: "If you see a bottle with no label, you should...", a: "ASK GROWNUP" },
-                { q: "The best way to protect your body is to...", a: "STAY SAFE" }
+            twoWord: [ // Levels 3 & 4
+                { q: "If someone asks you to try a mystery treat?", a: "NO WAY" },
+                { q: "If you see strange pills on the playground?", a: "WALK AWAY" },
+                { q: "If a friend asks you to try something scary?", a: "SAY NO" },
+                { q: "Always ask before eating if you...", a: "DONT KNOW" },
+                { q: "Who should you tell if you feel unsafe?", a: "SAFE ADULT" },
+                { q: "If you get lost, go and find a...", a: "HELPFUL GROWNUP" }
             ],
-            threeWord: [ 
+            threeWord: [ // Level 5
                 { q: "If you find a strange pill on the ground?", a: "DO NOT TOUCH" },
-                { q: "If you find a bottle with no name on it?", a: "DO NOT DRINK" },
-                { q: "If a stranger tries to give you a strange treat?", a: "DO NOT TAKE" },
+                { q: "If you find a bottle with no label on it?", a: "DO NOT DRINK" },
+                { q: "If a stranger tries to give you a mystery treat?", a: "DO NOT TAKE" },
                 { q: "If someone asks you to try something dangerous?", a: "USE YOUR VOICE" },
-                { q: "To keep your body safe and healthy, you must...", a: "PROTECT YOUR SELF" }
+                { q: "To keep your body healthy and safe, you...", a: "PROTECT YOUR SELF" }
             ]
         };
 
@@ -274,11 +281,11 @@
             const b3 = shuffleArray([...BANK.threeWord]);
 
             mission = [
-                b1[0], // L1
-                b1[1], // L2
-                b2[0], // L3
-                b2[1], // L4
-                b3[0]  // L5
+                b1[0], // L1 (1)
+                b1[1], // L2 (1)
+                b2[0], // L3 (2)
+                b2[1], // L4 (2)
+                b3[0]  // L5 (3)
             ];
             
             index = 0;
@@ -326,7 +333,7 @@
                 letters.appendChild(b);
             });
 
-            gsap.from(".letter-btn", { scale: 0, opacity: 0, stagger: 0.04, duration: 0.5, ease: "back.out" });
+            gsap.from(".letter-btn", { scale: 0, opacity: 0, stagger: 0.04, duration: 0.4, ease: "back.out" });
         }
 
         function handleLetter(btn, char) {
@@ -434,7 +441,7 @@
                     index < TOTAL ? loadLevel() : finish();
                 }, 1000);
             } else {
-                gsap.to(".game-canvas", { x: "1.5vmin", duration: 0.1, repeat: 3, yoyo: true, onComplete: loadLevel });
+                gsap.to(".game-canvas", { x: "1vmin", duration: 0.1, repeat: 3, yoyo: true, onComplete: loadLevel });
             }
         }
 
