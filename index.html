@@ -39,7 +39,7 @@
         }
 
         .champion-title {
-            font-size: 13vmin;
+            font-size: 14vmin;
             color: rgb(253, 224, 71);
             text-shadow: 0 1vmin 0 rgb(161, 98, 7);
             margin-bottom: 2vmin;
@@ -175,7 +175,6 @@
             </div>
         </div>
 
-        <!-- Intro Screen -->
         <div id="intro-screen" class="screen active">
             <h1 class="champion-title uppercase font-black">Safety Champion</h1>
             <div class="instruction-card">
@@ -189,7 +188,6 @@
             </button>
         </div>
 
-        <!-- Game Screen -->
         <div id="game-screen" class="screen">
             <div class="w-full mb-2">
                 <div class="w-full h-[2vmin] bg-black/40 rounded-full overflow-hidden">
@@ -197,13 +195,12 @@
                 </div>
             </div>
             <div class="flex-grow flex flex-col justify-around w-full py-1">
-                <h2 id="question-text" class="text-[5.5vmin] font-bold px-4 leading-none mb-2"></h2>
+                <h2 id="question-text" class="text-[5.5vmin] font-bold px-4 leading-none mb-2 text-center"></h2>
                 <div id="slots-wrap" class="flex flex-wrap justify-center items-center gap-[1vmin]"></div>
                 <div id="letters-wrap" class="flex flex-wrap justify-center gap-[2vmin]"></div>
             </div>
         </div>
 
-        <!-- Congrats Screen -->
         <div id="congrats-screen" class="screen">
             <div class="relative">
                 <div class="text-[20vmin] animate-bounce">🏆</div>
@@ -222,7 +219,7 @@
 
     <script>
         const BANK = {
-            oneWord: [ // Levels 1 & 2
+            oneWord: [
                 { q: "If a stranger offers you a mystery pill, say?", a: "NO" },
                 { q: "Who should always check medicine for you?", a: "ADULT" },
                 { q: "Healthy kids keep their brain and body...", a: "CLEAN" },
@@ -232,7 +229,7 @@
                 { q: "To stay safe, keep your body and brain...", a: "STRONG" },
                 { q: "Who can help you at home stay safe?", a: "PARENTS" }
             ],
-            twoWord: [ // Levels 3 & 4
+            twoWord: [
                 { q: "If someone asks you to try a mystery treat?", a: "NO WAY" },
                 { q: "If you see strange pills on the playground?", a: "WALK AWAY" },
                 { q: "If a friend asks you to try something scary?", a: "SAY NO" },
@@ -240,7 +237,7 @@
                 { q: "Who should you tell if you feel unsafe?", a: "SAFE ADULT" },
                 { q: "If you get lost, go and find a...", a: "HELPFUL GROWNUP" }
             ],
-            threeWord: [ // Level 5
+            threeWord: [
                 { q: "If you find a strange pill on the ground?", a: "DO NOT TOUCH" },
                 { q: "If you find a bottle with no label on it?", a: "DO NOT DRINK" },
                 { q: "If a stranger tries to give you a mystery treat?", a: "DO NOT TAKE" },
@@ -254,18 +251,35 @@
         let typed = [];
         let usedButtons = [];
         let locked = false;
+        let idleTimer;
         const TOTAL = 5;
+        const IDLE_LIMIT = 180000;
 
         function setScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id + '-screen').classList.add('active');
             const nav = document.getElementById('game-nav');
             id === 'game' ? nav.classList.remove('hidden') : nav.classList.add('hidden');
+            resetIdleTimer();
         }
 
         function exitToMenu() {
             setScreen('intro');
         }
+
+        function resetIdleTimer() {
+            clearTimeout(idleTimer);
+            const isIntro = document.getElementById('intro-screen').classList.contains('active');
+            if (!isIntro) {
+                idleTimer = setTimeout(() => {
+                    exitToMenu();
+                }, IDLE_LIMIT);
+            }
+        }
+
+        document.addEventListener('mousedown', resetIdleTimer);
+        document.addEventListener('touchstart', resetIdleTimer);
+        document.addEventListener('keydown', resetIdleTimer);
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -281,11 +295,11 @@
             const b3 = shuffleArray([...BANK.threeWord]);
 
             mission = [
-                b1[0], // L1 (1)
-                b1[1], // L2 (1)
-                b2[0], // L3 (2)
-                b2[1], // L4 (2)
-                b3[0]  // L5 (3)
+                b1[0],
+                b1[1],
+                b2[0],
+                b2[1],
+                b3[0]
             ];
             
             index = 0;
@@ -438,7 +452,7 @@
                 confetti({ particleCount: 60, spread: 60, origin: { y: 0.8 }, colors: ['rgb(253, 224, 71)', 'rgb(45, 212, 191)'] });
                 setTimeout(() => {
                     index++;
-                    index < TOTAL ? loadLevel() : finish();
+                    if (index < TOTAL) loadLevel(); else finish();
                 }, 1000);
             } else {
                 gsap.to(".game-canvas", { x: "1vmin", duration: 0.1, repeat: 3, yoyo: true, onComplete: loadLevel });
@@ -470,4 +484,3 @@
     </script>
 </body>
 </html>
-
