@@ -1,486 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Safety Champion Adventure</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Hero Mission: The Healthy Choice</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary-blue: rgb(79, 70, 229);
+  --primary-yellow: rgb(253, 224, 71);
+  --soft-white: rgb(255, 255, 255);
+  --base-unit: 1vmin;
+}
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--primary-blue);
+  height: 100dvh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.header-font, .btn-font { 
+  font-family: 'Fredoka One', cursive; 
+  letter-spacing: 0.05em;
+}
+.card-shadow { box-shadow: 0 calc(var(--base-unit) * 1.5) 0px rgba(0, 0, 0, 0.2); }
+.choice-btn { 
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  touch-action: manipulation; 
+  background-color: var(--primary-blue); 
+  color: white !important;
+  border-bottom: calc(var(--base-unit) * 1.2) solid rgb(49, 46, 129);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.choice-btn:active { transform: translateY(0.5vh); border-bottom-width: 2px; }
 
-        body {
-            font-family: 'Fredoka', sans-serif;
-            background: radial-gradient(circle at center, rgb(88, 28, 135) 0%, rgb(30, 7, 59) 100%);
-            color: rgb(255, 255, 255);
-            height: 100vh;
-            width: 100vw;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            touch-action: manipulation;
-        }
+.game-container {
+  width: 100vw;
+  height: 100dvh;
+  padding: calc(var(--base-unit) * 5); 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
 
-        .game-canvas {
-            width: 96vw;
-            height: 94vh;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 4vmin;
-            border: 0.8vmin solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            flex-direction: column;
-            padding: 2vmin;
-            box-sizing: border-box;
-            position: relative;
-        }
+.hidden { display: none !important; }
 
-        .champion-title {
-            font-size: 14vmin;
-            color: rgb(253, 224, 71);
-            text-shadow: 0 1vmin 0 rgb(161, 98, 7);
-            margin-bottom: 2vmin;
-            line-height: 1;
-        }
+.mission-card {
+  background: white;
+  border: calc(var(--base-unit) * 1.2) solid var(--primary-yellow);
+  border-radius: calc(var(--base-unit) * 7);
+  padding: calc(var(--base-unit) * 5);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
 
-        .champion-title-small {
-            font-size: 5vmin;
-            color: rgb(253, 224, 71);
-            text-shadow: 0 0.4vmin 0 rgb(161, 98, 7);
-        }
+.title-text { font-size: calc(var(--base-unit) * 10); line-height: 1; }
+.body-text { font-size: calc(var(--base-unit) * 4); line-height: 1.4; }
+.q-text { font-size: calc(var(--base-unit) * 6); line-height: 1.2; font-weight: 900; }
+.btn-text { font-size: calc(var(--base-unit) * 4.5); padding: calc(var(--base-unit) * 2.5) calc(var(--base-unit) * 8); border-radius: calc(var(--base-unit) * 12); }
+.emoji-size { font-size: calc(var(--base-unit) * 22); line-height: 1; }
+.icon-btn-size { width: calc(var(--base-unit) * 9); height: calc(var(--base-unit) * 9); }
 
-        .btn-primary {
-            background: linear-gradient(to bottom, rgb(34, 197, 94), rgb(16, 185, 129));
-            box-shadow: 0 1vmin 0 rgb(6, 95, 70);
-            border-radius: 3vmin;
-            transition: transform 0.1s;
-        }
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: var(--primary-yellow); border-radius: 10px; }
 
-        .btn-primary:active {
-            transform: translateY(0.5vmin);
-            box-shadow: 0 0.5vmin 0 rgb(6, 95, 70);
-        }
+@media (orientation: landscape) {
+  .landscape-row { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 6vw; width: 100%; flex: 1; min-height: 0; }
+  .landscape-emoji { font-size: calc(var(--base-unit) * 30) !important; flex-shrink: 0; }
+  .landscape-stack { display: flex; flex-direction: column; justify-content: center; flex: 1; }
+  .landscape-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 3vh !important; }
+}
 
-        .nav-icon {
-            width: 7vmin;
-            height: 7vmin;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2vmin;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .slot {
-            background: rgba(0, 0, 0, 0.3);
-            border: 0.4vmin dashed rgba(255, 255, 255, 0.3);
-            width: 6.5vmin;
-            height: 9vmin;
-            border-radius: 1.5vmin;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5vmin;
-            font-weight: 700;
-            cursor: default;
-        }
-
-        .slot.filled {
-            cursor: pointer;
-        }
-
-        .slot.active {
-            border-color: rgb(45, 212, 191);
-            background: rgba(45, 212, 191, 0.2);
-            transform: scale(1.05);
-        }
-
-        .slot-spacer {
-            width: 3vmin;
-        }
-
-        .letter-btn {
-            background: linear-gradient(to bottom, rgb(244, 114, 182), rgb(219, 39, 119));
-            box-shadow: 0 0.7vmin 0 rgb(157, 23, 77);
-            width: 8vmin;
-            height: 8vmin;
-            border-radius: 2vmin;
-            font-size: 4.5vmin;
-            font-weight: 700;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: none;
-        }
-
-        .flying-letter {
-            position: fixed;
-            z-index: 999;
-            pointer-events: none;
-            background: rgb(45, 212, 191);
-            border-radius: 2vmin;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            box-shadow: 0 0 3vmin rgba(45, 212, 191, 0.6);
-        }
-
-        .screen {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .screen.active {
-            display: flex;
-        }
-
-        .instruction-card {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 3vmin;
-            border-radius: 3vmin;
-            max-width: 80vmin;
-            margin-bottom: 3vmin;
-        }
-    </style>
+.floating { animation: floating 3s ease-in-out infinite; }
+@keyframes floating {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(calc(var(--base-unit) * -3)); }
+}
+</style>
 </head>
 <body>
 
-    <div class="game-canvas">
-        <div id="game-nav" class="hidden flex justify-between items-center w-full mb-1">
-            <div class="nav-icon" onclick="exitToMenu()">
-                <svg viewBox="0 0 24 24" width="70%" height="70%" fill="none" stroke="currentColor" stroke-width="3">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-            </div>
-            <h1 class="champion-title-small uppercase font-black text-center flex-1">Safety Champion</h1>
-            <div class="nav-icon" onclick="toggleFullScreen()">
-                <svg viewBox="0 0 24 24" width="70%" height="70%" fill="none" stroke="currentColor" stroke-width="3">
-                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-                </svg>
-            </div>
-        </div>
+<div class="fixed top-6 right-6 z-50 flex gap-4">
+  <button onclick="toggleFullScreen()" class="bg-white p-3 rounded-full shadow-lg hover:bg-yellow-100 transition-colors">
+    <svg class="icon-btn-size" fill="rgb(79, 70, 229)" viewBox="0 0 256 256"><path d="M160,48a8,8,0,0,1,8-8h40a8,8,0,0,1,8,8V88a8,8,0,0,1-16,0V56H168A8,8,0,0,1,160,48ZM88,200H48V168a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H88a8,8,0,0,0,0-16Zm128-40a8,8,0,0,0-8,8v32H176a8,8,0,0,0,0,16h40a8,8,0,0,0,8-8V168A8,8,0,0,0,216,160ZM48,96a8,8,0,0,0,8-8V56H88a8,8,0,0,0,0-16H48a8,8,0,0,0-8,8V88A8,8,0,0,0,48,96Z"></path></svg>
+  </button>
+</div>
 
-        <div id="intro-screen" class="screen active">
-            <h1 class="champion-title uppercase font-black">Safety Champion</h1>
-            <div class="instruction-card">
-                <h3 class="text-[4.5vmin] font-bold text-yellow-300 mb-1">How to Play</h3>
-                <p class="text-[2.8vmin] leading-tight text-slate-200">
-                    Learn to keep your body safe! Read the question and find the answer. Click the letters in order. Mistake? Click the square to undo! Finish 5 levels to win.
-                </p>
-            </div>
-            <button onclick="startGame()" class="btn-primary text-[5vmin] font-black py-[2.5vmin] px-[12vmin] text-white uppercase tracking-widest">
-                Start Mission
-            </button>
-        </div>
+<div class="fixed bottom-6 right-6 z-50">
+  <button onclick="handleResetClick()" class="bg-white p-3 rounded-full shadow-lg hover:bg-yellow-100 transition-colors flex items-center justify-center border-4 border-yellow-400">
+    <svg class="icon-btn-size" fill="rgb(79, 70, 229)" viewBox="0 0 256 256"><path d="M224,115.55V208a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V168a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8v40a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V115.55a16,16,0,0,1,5.17-11.78l80-75.48a16,16,0,0,1,21.66,0l80,75.48A16,16,0,0,1,224,115.55Z"></path></svg>
+  </button>
+</div>
 
-        <div id="game-screen" class="screen">
-            <div class="w-full mb-2">
-                <div class="w-full h-[2vmin] bg-black/40 rounded-full overflow-hidden">
-                    <div id="progress-bar" class="h-full bg-teal-400 w-0 transition-all duration-500"></div>
-                </div>
-            </div>
-            <div class="flex-grow flex flex-col justify-around w-full py-1">
-                <h2 id="question-text" class="text-[5.5vmin] font-bold px-4 leading-none mb-2 text-center"></h2>
-                <div id="slots-wrap" class="flex flex-wrap justify-center items-center gap-[1vmin]"></div>
-                <div id="letters-wrap" class="flex flex-wrap justify-center gap-[2vmin]"></div>
-            </div>
-        </div>
+<div class="game-container">
+  <div id="start-screen" class="mission-card card-shadow">
+    <div class="landscape-row">
+      <div class="emoji-size floating landscape-emoji">🦸‍♂️</div>
+      <div class="landscape-stack items-center landscape:items-start">
+        <h1 class="header-font text-indigo-600 uppercase title-text mb-6">HERO MISSION</h1>
+        <p class="text-gray-600 font-bold body-text text-center landscape:text-left mb-10">10 Random Challenges inside!<br> Protect your brain and stay safe.</p>
+        <button onclick="handleStartClick()" class="btn-font bg-indigo-600 text-white uppercase shadow-xl btn-text">START MISSION</button>
+      </div>
+    </div>
+  </div>
 
-        <div id="congrats-screen" class="screen">
-            <div class="relative">
-                <div class="text-[20vmin] animate-bounce">🏆</div>
-                <div class="absolute -top-[2vmin] -right-[2vmin] text-[10vmin]">✨</div>
-            </div>
-            <h2 class="text-[10vmin] font-black text-white mb-1 leading-none">YOU WIN!</h2>
-            <h3 class="text-[5.5vmin] text-yellow-300 font-bold mb-4">CERTIFIED SAFETY CHAMPION</h3>
-            <p class="text-[3vmin] text-slate-200 mb-6 max-w-[75vmin]">
-                You finished the mission! You know how to make healthy choices and stay away from dangerous things.
-            </p>
-            <button onclick="exitToMenu()" class="btn-primary text-[4.5vmin] font-black py-[2vmin] px-[10vmin] text-white uppercase tracking-tighter">
-                Main Menu
-            </button>
+  <div id="question-screen" class="hidden mission-card card-shadow">
+    <div class="w-full flex justify-between items-center gap-6 mb-4">
+      <span id="progress-text" class="text-indigo-600 font-black uppercase whitespace-nowrap body-text">Mission 1/10</span>
+      <div class="flex-1 bg-gray-200 h-5 rounded-full overflow-hidden border-2 border-gray-100">
+        <div id="progress-bar" class="bg-indigo-500 h-full transition-all duration-500 w-[10%]"></div>
+      </div>
+    </div>
+    
+    <div class="landscape-row">
+      <div id="q-emoji" class="emoji-size landscape-emoji mb-4 landscape:mb-0">🤔</div>
+      <div class="landscape-stack w-full">
+        <h2 id="question-text" class="text-gray-800 q-text text-center landscape:text-left mb-8">Loading...</h2>
+        <div id="options-grid" class="grid grid-cols-1 landscape-grid gap-6 w-full">
+          <button onclick="handleAnswerClick(0)" id="btn-0" class="choice-btn btn-font btn-text uppercase">Option A</button>
+          <button onclick="handleAnswerClick(1)" id="btn-1" class="choice-btn btn-font btn-text uppercase">Option B</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="end-screen" class="hidden mission-card card-shadow">
+    <div class="landscape-row flex-shrink-0">
+      <div id="end-emoji" class="emoji-size landscape-emoji">🏆</div>
+      <div class="landscape-stack items-center landscape:items-start">
+        <h1 class="header-font text-indigo-600 uppercase title-text">MISSION COMPLETE</h1>
+        <p class="text-gray-600 font-bold q-text mt-2">Score: <span id="final-score" class="text-indigo-600">0</span>/10</p>
+      </div>
+    </div>
+    
+    <div class="bg-indigo-50 p-6 rounded-[2.5rem] border-4 border-dashed border-yellow-400 w-full max-w-5xl mx-auto overflow-y-auto custom-scrollbar flex-1 my-6 flex flex-col justify-center min-h-0">
+      <div class="header-font text-indigo-800 mb-2 uppercase text-center body-text">Final Report:</div>
+      <p id="dynamic-advice" class="text-gray-700 font-bold text-center body-text"></p>
     </div>
 
-    <script>
-        const BANK = {
-            oneWord: [
-                { q: "If a stranger offers you a mystery pill, say?", a: "NO" },
-                { q: "Who should always check medicine for you?", a: "ADULT" },
-                { q: "Healthy kids keep their brain and body...", a: "CLEAN" },
-                { q: "Making safe choices makes you a Safety...", a: "CHAMPION" },
-                { q: "If you find a pill that looks like candy?", a: "AWAY" },
-                { q: "What should you stay away from if you find it?", a: "DRUGS" },
-                { q: "To stay safe, keep your body and brain...", a: "STRONG" },
-                { q: "Who can help you at home stay safe?", a: "PARENTS" }
-            ],
-            twoWord: [
-                { q: "If someone asks you to try a mystery treat?", a: "NO WAY" },
-                { q: "If you see strange pills on the playground?", a: "WALK AWAY" },
-                { q: "If a friend asks you to try something scary?", a: "SAY NO" },
-                { q: "Always ask before eating if you...", a: "DONT KNOW" },
-                { q: "Who should you tell if you feel unsafe?", a: "SAFE ADULT" },
-                { q: "If you get lost, go and find a...", a: "HELPFUL GROWNUP" }
-            ],
-            threeWord: [
-                { q: "If you find a strange pill on the ground?", a: "DO NOT TOUCH" },
-                { q: "If you find a bottle with no label on it?", a: "DO NOT DRINK" },
-                { q: "If a stranger tries to give you a mystery treat?", a: "DO NOT TAKE" },
-                { q: "If someone asks you to try something dangerous?", a: "USE YOUR VOICE" },
-                { q: "To keep your body healthy and safe, you...", a: "PROTECT YOUR SELF" }
-            ]
-        };
+    <button onclick="handleResetClick()" class="btn-font bg-indigo-600 text-white uppercase shadow-xl btn-text flex-shrink-0">NEW MISSION</button>
+  </div>
+</div>
 
-        let mission = [];
-        let index = 0;
-        let typed = [];
-        let usedButtons = [];
-        let locked = false;
-        let idleTimer;
-        const TOTAL = 5;
-        const IDLE_LIMIT = 180000;
+<script>
+const clickAudio = new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YTdvT18AZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA=");
+let idleTimeout;
+const IDLE_LIMIT = 3 * 60 * 1000;
 
-        function setScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id + '-screen').classList.add('active');
-            const nav = document.getElementById('game-nav');
-            id === 'game' ? nav.classList.remove('hidden') : nav.classList.add('hidden');
-            resetIdleTimer();
-        }
+function playClick() { clickAudio.currentTime = 0; clickAudio.play().catch(() => {}); }
+function toggleFullScreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+  else if (document.exitFullscreen) document.exitFullscreen();
+}
+function resetIdleTimer() {
+  clearTimeout(idleTimeout);
+  if (document.getElementById("start-screen").classList.contains("hidden")) {
+    idleTimeout = setTimeout(() => { handleResetClick(); }, IDLE_LIMIT);
+  }
+}
+['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => {
+  document.addEventListener(evt, resetIdleTimer, true);
+});
 
-        function exitToMenu() {
-            setScreen('intro');
-        }
+const allQuestions = [
+  {q: "Someone says a 'vape' is just flavored steam. What's the truth?", o: ["It has harmful chemicals.", "It's just water vapor."], c: 0, e: "💨", advice: "Vapes contain nicotine that hurts your growing brain."},
+  {q: "A friend offers you a pill to help you study. What do you do?", o: ["Say no and tell an adult.", "Take it if I'm tired."], c: 0, e: "💊", advice: "Only take medicine from parents or doctors."},
+  {q: "What's the best way to handle peer pressure to try drugs?", o: ["Be Brave and say 'No Thanks!'", "Do it just once."], c: 0, e: "💪", advice: "True leaders say 'No' to stay safe and in control."},
+  {q: "Why is your brain so important right now?", o: ["It's still growing and learning.", "It's already finished growing."], c: 0, e: "🧠", advice: "Your brain is still developing—keep it free from glitches."},
+  {q: "You find colorful stuff that looks like candy on the ground. Plan?", o: ["Leave it and alert a teacher.", "Eat it—it looks tasty!"], c: 0, e: "🍬", advice: "Never eat things found on the ground."},
+  {q: "What happens to sports skills if someone uses drugs?", o: ["They get slower and clumsy.", "They become faster."], c: 0, e: "⚽", advice: "Drugs make your body slow and weak."},
+  {q: "Older kids say vaping is 'cool'. Is it?", o: ["No, it's a bad habit.", "Yes, everyone does it."], c: 0, e: "🛑", advice: "Being in control is much cooler than being hooked on a vape."},
+  {q: "How do drugs affect your future goals?", o: ["They make goals harder to reach.", "They help you reach them."], c: 0, e: "🚀", advice: "Stay clear-headed to reach your biggest dreams!"},
+  {q: "If someone asks you to keep a 'drug secret', what do you do?", o: ["Tell a trusted adult.", "Keep the secret."], c: 0, e: "🗣️", advice: "Safety is never a secret. Always tell a trusted adult."},
+  {q: "What is safe and fun?!", o: ["Sports, art, and music.", "Trying mystery smoke."], c: 0, e: "🎨", advice: "Hobbies like sports and art give you a healthy happy feeling."},
+  {q: "Feeling stressed or sad? What's a smart move?", o: ["Talk to a parent or teacher.", "Try drugs to forget."], c: 0, e: "🫂", advice: "Talking about your feelings is your real strength."},
+  {q: "What does nicotine do to your body?", o: ["It's addictive and tricks you.", "It makes you smarter."], c: 0, e: "🔗", advice: "Nicotine tries to hook your brain. Stay free!"},
+  {q: "A healthy heart beats best with...", o: ["Fresh air and exercise.", "Vaping and pills."], c: 0, e: "🫀", advice: "Fresh air keeps your heart engine running strong."},
+  {q: "Best 'food' for your brain?", o: ["Reading and puzzles.", "Energy drinks."], c: 0, e: "📚", advice: "Learning builds brain power more than any drug could."},
+  {q: "Your lungs are like...", o: ["Pink sponges for air.", "Metal tubes."], c: 0, e: "🫁", advice: "Lungs need clean air. Smoke and vapes clog them."},
+  {q: "Who is in charge of your body?", o: ["I am!", "People offering items."], c: 0, e: "👑", advice: "You're the captain of your body. Stay in charge!"},
+  {q: "How does smoking change your breath and teeth?", o: ["Bad breath and yellow teeth.", "White teeth."], c: 0, e: "🤢", advice: "Smoking stains your smile and causes bad breath."}
+];
 
-        function resetIdleTimer() {
-            clearTimeout(idleTimer);
-            const isIntro = document.getElementById('intro-screen').classList.contains('active');
-            if (!isIntro) {
-                idleTimer = setTimeout(() => {
-                    exitToMenu();
-                }, IDLE_LIMIT);
-            }
-        }
-
-        document.addEventListener('mousedown', resetIdleTimer);
-        document.addEventListener('touchstart', resetIdleTimer);
-        document.addEventListener('keydown', resetIdleTimer);
-
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        function startGame() {
-            const b1 = shuffleArray([...BANK.oneWord]);
-            const b2 = shuffleArray([...BANK.twoWord]);
-            const b3 = shuffleArray([...BANK.threeWord]);
-
-            mission = [
-                b1[0],
-                b1[1],
-                b2[0],
-                b2[1],
-                b3[0]
-            ];
-            
-            index = 0;
-            setScreen('game');
-            loadLevel();
-        }
-
-        function loadLevel() {
-            const current = mission[index];
-            typed = [];
-            usedButtons = [];
-            locked = false;
-
-            document.getElementById('progress-bar').style.width = (index / TOTAL * 100) + "%";
-            document.getElementById('question-text').innerText = current.q;
-
-            const slots = document.getElementById('slots-wrap');
-            slots.innerHTML = "";
-            let slotId = 0;
-            
-            current.a.split("").forEach((char) => {
-                if (char === " ") {
-                    const spacer = document.createElement('div');
-                    spacer.className = "slot-spacer";
-                    slots.appendChild(spacer);
-                } else {
-                    const s = document.createElement('div');
-                    s.className = "slot " + (slotId === 0 ? "active" : "");
-                    s.id = "slot-" + slotId;
-                    const currentId = slotId;
-                    s.onclick = () => handleUndo(currentId);
-                    slots.appendChild(s);
-                    slotId++;
-                }
-            });
-
-            const letters = document.getElementById('letters-wrap');
-            letters.innerHTML = "";
-            const charArray = current.a.replace(/\s/g, "").split("");
-            shuffleArray(charArray).forEach(char => {
-                const b = document.createElement('button');
-                b.className = "letter-btn";
-                b.innerText = char;
-                b.onclick = (e) => handleLetter(e.target, char);
-                letters.appendChild(b);
-            });
-
-            gsap.from(".letter-btn", { scale: 0, opacity: 0, stagger: 0.04, duration: 0.4, ease: "back.out" });
-        }
-
-        function handleLetter(btn, char) {
-            const goal = mission[index].a.replace(/\s/g, "");
-            if (locked || typed.length >= goal.length) return;
-
-            locked = true;
-            const slotPos = typed.length;
-            typed.push(char);
-            usedButtons.push(btn);
-            
-            const slot = document.getElementById("slot-" + slotPos);
-            btn.style.visibility = "hidden";
-
-            const bRect = btn.getBoundingClientRect();
-            const sRect = slot.getBoundingClientRect();
-            
-            const fly = document.createElement('div');
-            fly.className = "flying-letter";
-            fly.innerText = char;
-            fly.style.width = bRect.width + "px";
-            fly.style.height = bRect.height + "px";
-            fly.style.left = bRect.left + "px";
-            fly.style.top = bRect.top + "px";
-            fly.style.fontSize = window.getComputedStyle(btn).fontSize;
-            document.body.appendChild(fly);
-
-            gsap.to(fly, {
-                duration: 0.4,
-                left: sRect.left,
-                top: sRect.top,
-                width: sRect.width,
-                height: sRect.height,
-                rotation: 360,
-                ease: "power2.out",
-                onComplete: () => {
-                    slot.innerText = char;
-                    slot.classList.remove('active');
-                    slot.classList.add('filled');
-                    slot.style.borderStyle = "solid";
-                    slot.style.borderColor = "rgb(45, 212, 191)";
-                    
-                    const next = document.getElementById("slot-" + (slotPos + 1));
-                    if (next) next.classList.add('active');
-                    
-                    fly.remove();
-                    locked = false;
-                    if (typed.length === goal.length) validate();
-                }
-            });
-        }
-
-        function handleUndo(slotIdx) {
-            if (locked || slotIdx !== typed.length - 1 || typed.length === 0) return;
-
-            locked = true;
-            const char = typed.pop();
-            const btn = usedButtons.pop();
-            const slot = document.getElementById("slot-" + slotIdx);
-            
-            const sRect = slot.getBoundingClientRect();
-            const bRect = btn.getBoundingClientRect();
-
-            const fly = document.createElement('div');
-            fly.className = "flying-letter";
-            fly.innerText = char;
-            fly.style.width = sRect.width + "px";
-            fly.style.height = sRect.height + "px";
-            fly.style.left = sRect.left + "px";
-            fly.style.top = sRect.top + "px";
-            fly.style.fontSize = window.getComputedStyle(slot).fontSize;
-            document.body.appendChild(fly);
-
-            slot.innerText = "";
-            slot.classList.remove('filled');
-            slot.classList.add('active');
-            slot.style.borderStyle = "dashed";
-            slot.style.borderColor = "rgba(255, 255, 255, 0.3)";
-
-            const next = document.getElementById("slot-" + (slotIdx + 1));
-            if (next) next.classList.remove('active');
-
-            gsap.to(fly, {
-                duration: 0.4,
-                left: bRect.left,
-                top: bRect.top,
-                width: bRect.width,
-                height: bRect.height,
-                rotation: -360,
-                ease: "power2.inOut",
-                onComplete: () => {
-                    btn.style.visibility = "visible";
-                    fly.remove();
-                    locked = false;
-                }
-            });
-        }
-
-        function validate() {
-            const answer = mission[index].a.replace(/\s/g, "");
-            if (typed.join("") === answer) {
-                confetti({ particleCount: 60, spread: 60, origin: { y: 0.8 }, colors: ['rgb(253, 224, 71)', 'rgb(45, 212, 191)'] });
-                setTimeout(() => {
-                    index++;
-                    if (index < TOTAL) loadLevel(); else finish();
-                }, 1000);
-            } else {
-                gsap.to(".game-canvas", { x: "1vmin", duration: 0.1, repeat: 3, yoyo: true, onComplete: loadLevel });
-            }
-        }
-
-        function finish() {
-            document.getElementById('progress-bar').style.width = "100%";
-            setScreen('congrats');
-            const end = Date.now() + 4000;
-            const colors = ['rgb(253, 224, 71)', 'rgb(45, 212, 191)', 'rgb(244, 114, 182)'];
-
-            (function burst() {
-                confetti({ particleCount: 5, angle: 60, spread: 65, origin: { x: 0 }, colors: colors });
-                confetti({ particleCount: 5, angle: 120, spread: 65, origin: { x: 1 }, colors: colors });
-                if (Date.now() < end) requestAnimationFrame(burst);
-            }());
-        }
-
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
-        }
-
-        window.onload = () => setScreen('intro');
-    </script>
+let gameQuestions = [], currentQ = 0, score = 0, missedAdviceList = [];
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function handleStartClick() { playClick(); startGame(); resetIdleTimer(); }
+function handleAnswerClick(i) { playClick(); checkAnswer(i); resetIdleTimer(); }
+function handleResetClick() { playClick(); location.reload(); }
+function startGame() {
+  gameQuestions = shuffle([...allQuestions]).slice(0, 10);
+  currentQ = score = 0; missedAdviceList = [];
+  document.getElementById("start-screen").classList.add("hidden");
+  document.getElementById("end-screen").classList.add("hidden");
+  document.getElementById("question-screen").classList.remove("hidden");
+  showQuestion();
+}
+function showQuestion() {
+  const data = gameQuestions[currentQ];
+  document.getElementById("question-text").innerText = data.q;
+  document.getElementById("btn-0").innerText = data.o[0];
+  document.getElementById("btn-1").innerText = data.o[1];
+  document.getElementById("q-emoji").innerText = data.e;
+  document.getElementById("progress-text").innerText = `Mission ${currentQ + 1}/10`;
+  document.getElementById("progress-bar").style.width = `${(currentQ + 1) * 10}%`;
+}
+function checkAnswer(i) {
+  const data = gameQuestions[currentQ];
+  if (i === data.c) { score++; } else { missedAdviceList.push(data.advice); }
+  currentQ++;
+  if (currentQ < 10) showQuestion();
+  else showEnd();
+}
+function showEnd() {
+  document.getElementById("question-screen").classList.add("hidden");
+  document.getElementById("end-screen").classList.remove("hidden");
+  document.getElementById("final-score").innerText = score;
+  const advicePara = document.getElementById("dynamic-advice");
+  const endEmoji = document.getElementById("end-emoji");
+  const advice = missedAdviceList[0] || "Your brain is your most powerful tool!";
+  if (score >= 8) {
+    endEmoji.innerText = "⭐";
+    advicePara.innerText = `Outstanding Hero! You are so close to perfection. Remember: ${advice} Make it even better by staying focused!`;
+  } else if (score >= 6) {
+    endEmoji.innerText = "💪";
+    let name = score === 6 ? "Friend" : "Hero"; 
+    advicePara.innerText = `${name}, this is good enough, but you can do better! Keep this in mind: ${advice}. Aim for a perfect 10 next time!`;
+  } else {
+    endEmoji.innerText = "⚡";
+    advicePara.innerText = `Keep pushing! Practice makes us stronger. Remember: ${advice}. Your brain deserves to stay strong!`;
+  }
+}
+</script>
 </body>
 </html>
