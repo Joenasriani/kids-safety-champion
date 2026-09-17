@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kids-safety-champion.vercel.app/sitemap.xml
