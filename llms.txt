@@ -1,0 +1,12 @@
+# Safety Champion Adventure
+
+Canonical play URL: https://kids-safety-champion.vercel.app/
+Repository: https://github.com/Joenasriani/kids-safety-champion
+
+Safety Champion Adventure is a five-level letter-assembly safety game developed as part of a multi-game interactive children’s edutainment activation in the UAE.
+
+Core interaction: safety prompt → shuffled answer letters → ordered letter selection → completed answer → next level.
+
+Each run contains two one-word prompts, two two-word prompts, and one three-word prompt. The current question bank covers unknown pills or substances, medicine supervision, strangers, unsafe offers, trusted adults, and unknown online contacts.
+
+The in-game “Certified Safety Champion” message is a completion reward inside the game. The repository does not contain a validation study of learning retention or behavior change outside the game.
